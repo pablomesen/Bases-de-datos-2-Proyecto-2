@@ -1106,6 +1106,16 @@ files = [
 ]
 
 [[package]]
+name = "spark"
+version = "0.2.1"
+description = "A Super-Small, Super-Fast, and Super-Easy web framework"
+optional = false
+python-versions = "*"
+files = [
+    {file = "spark-0.2.1.tar.gz", hash = "sha256:df499b57d30178c6d32dbda2af188b9833a261a70ccd262126ed7b415d9e36d1"},
+]
+
+[[package]]
 name = "stack-data"
 version = "0.6.3"
 description = "Extract data from python stack frames and tracebacks for informative displays"
@@ -1244,4 +1254,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "a59e9c6d18dd54f7975c500ae2658e2d1ae00994944d07a22c478934a915d8d5"
+content-hash = "17dfd23bdefde86d434cfdaaba0dea1321e4e04be422f5ae56deb8f0c22fbce4"

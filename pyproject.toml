@@ -12,6 +12,7 @@ neo4j-driver = "^5.26.0"
 pandas = "^2.2.3"
 pyspark = "^3.5.3"
 findspark = "^2.0.1"
+spark = "^0.2.1"
 
 
 [tool.poetry.group.dev.dependencies]
