@@ -1,4 +1,4 @@
-from .neo4j_conn import check_connection
+from neo4j_conn import check_connection
 import pandas as pd
 
 # Connection to Neo4J Database

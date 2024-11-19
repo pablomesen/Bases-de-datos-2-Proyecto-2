@@ -11,5 +11,7 @@ RUN install_packages curl
 USER 1001
 
 # Descargar el conector de Neo4j para Spark
-RUN curl -L https://repo1.maven.org/maven2/org/neo4j/neo4j-connector-apache-spark_2.12/5.3.2_for_spark_3/neo4j-connector-apache-spark_2.12-5.3.2_for_spark_3.jar --output /opt/bitnami/spark/jars/neo4j-connector-apache-spark_2.12-5.3.2_for_spark_3.jar
+# RUN curl -L https://repo1.maven.org/maven2/org/neo4j/neo4j-connector-apache-spark_2.12/5.3.2_for_spark_3/neo4j-connector-apache-spark_2.12-5.3.2_for_spark_3.jar --output /opt/bitnami/spark/jars/neo4j-connector-apache-spark_2.12-5.3.2_for_spark_3.jar
 
+# Descargar el conector de Neo4j para Spark (OTRO CONECTOR)
+RUN curl -L https://repo1.maven.org/maven2/org/neo4j/neo4j-connector-apache-spark_2.12/5.3.2_for_spark_3/neo4j-connector-apache-spark_2.12-5.3.2_for_spark_3.jar --output neo4j-connector-apache-spark.jar

@@ -1,43 +1,68 @@
-  services:
-    spark:
-      build:
-        context: .
-        dockerfile: Dockerfile  
-      image: spark-neo4j:latest
-      container_name: spark_container
-      ports:
-        - "8080:8080"  # Puerto de la UI de Spark
-        - "7077:7077"  # Puerto del nodo principal de Spark
-      environment:
-        - SPARK_MODE=master  # Configura Spark como el nodo principal
-        - SPARK_MASTER_HOST=spark_container
-        - SPARK_MASTER_PORT=7077 
-        - SPARK_MASTER_MEMORY=2g 
-      volumes:
-        - ./spark_logs:/opt/bitnami/spark/logs  # Monta un volumen para los logs
-      depends_on:
-        - neo4j
-      networks:
-        - spark-neo4j-net
+services:
+  spark-master:
+    build:
+      context: .
+      dockerfile: Dockerfile  
+    image: spark-neo4j:latest
+    container_name: spark-master
+    ports:
+      - "8080:8080"  # Spark Master UI
+      - "7077:7077"  # Spark Master port
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_HOST=0.0.0.0  # Bind to all interfaces
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+      - SPARK_PUBLIC_DNS=localhost  # Accessible from the host
+    volumes:
+      - ./spark_logs:/opt/bitnami/spark/logs
+    networks:
+      - spark-neo4j-net  # Connect to the Docker network
 
-    neo4j:
-      image: neo4j:5.10.0
-      container_name: neo4j_container
-      ports:
-        - "7474:7474"  # Puerto para la UI de Neo4j
-        - "7687:7687"  # Puerto para la conexión Bolt
-      environment:
-        - NEO4J_AUTH=neo4j/badpassword  
-      volumes:
-        - neo4j_data:/var/lib/neo4j/data 
-        - neo4j_import:/var/lib/neo4j/import  
-      networks:
-        - spark-neo4j-net
+  spark-worker-1:
+    image: spark-neo4j:latest
+    container_name: spark-worker-1
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+    depends_on:
+      - spark-master
+    networks:
+      - spark-neo4j-net
 
-  volumes:
-    neo4j_data:
-    neo4j_import:
+  spark-worker-2:
+    image: spark-neo4j:latest
+    container_name: spark-worker-2
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+    depends_on:
+      - spark-master
+    networks:
+      - spark-neo4j-net
 
-  networks:
-    spark-neo4j-net:
-      driver: bridge
+  neo4j:
+    image: neo4j:5.10.0
+    container_name: neo4j_container
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/badpassword  
+    volumes:
+      - neo4j_data:/var/lib/neo4j/data 
+      - neo4j_import:/var/lib/neo4j/import  
+    networks:
+      - spark-neo4j-net
+
+volumes:
+  neo4j_data:
+  neo4j_import:
+
+networks:
+  spark-neo4j-net:
+    driver: bridge
