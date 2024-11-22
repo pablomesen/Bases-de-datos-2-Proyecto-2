@@ -1,11 +1,15 @@
-from neo4j_conn import check_connection
+from neo4j import GraphDatabase
 import pandas as pd
 
-# Connection to Neo4J Database
-driver = check_connection()
+uri = "bolt://localhost:7687"
+username = "neo4j"
+password = "badpassword"
+
+# Crear la conexión
+driver = GraphDatabase.driver(uri, auth=(username, password))
 
 # Read CSV file and select needed columns
-csv_file = "./datasets/04_Transactions.csv"
+csv_file = "./dataset/Transactions.csv"
 data = pd.read_csv(csv_file, usecols=["transaction_id", "product_id", "customer_id", "transaction_date", "standard_cost"])
 
 # Clean data: remove rows with NaN in needed columns
