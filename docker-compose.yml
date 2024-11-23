@@ -5,7 +5,7 @@ services:
     ports:
       - "8888:8888"
     volumes:
-      - D:\1-Proyectos\pruebas-spark:/home/jovyan/work
+      - C:\Users\todom\Repositorios\Bases-de-datos-2-Proyecto-2:/home/jovyan/work
     environment:
       - JUPYTER_ENABLE_LAB=yes
       - PYSPARK_DRIVER_PYTHON=jupyter
